@@ -1,0 +1,12 @@
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/benchmark.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/benchmark-naive.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/benchmark-blocked.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/benchmark-blas.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/package.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/package_source.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/edit_cache.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/rebuild_cache.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/list_install_components.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/install.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/install/local.dir
+/global/homes/l/ll987/cs5220/hw1/build/CMakeFiles/install/strip.dir
