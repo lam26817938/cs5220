@@ -1,0 +1,3 @@
+*** FAILURE *** Error in matrix multiply exceeds componentwise error bounds.
+srun: error: nid004485: task 0: Exited with exit code 1
+srun: Terminating StepId=20893821.0
