@@ -27,7 +27,7 @@ void print_matrix(const char* desc, int lda, double* C) {
     printf("\n");
 }
 
-static void kernel(int lda, int K, double* A, double* B, double* C)
+static void inline kernel(int lda, int K, double* A, double* B, double* C)
 {
     __m256d aa1, aa2;
 
@@ -110,37 +110,30 @@ static void kernel(int lda, int K, double* A, double* B, double* C)
 /* This auxiliary subroutine performs a smaller dgemm operation
  *  C := C + A * B
  * where C is M-by-N, A is M-by-K, and B is K-by-N. */
-static void do_block (int lda, int M, int N, int K, double* A, double* B, double* C){
-
-    double* A_block = (double*)_mm_malloc(M * K * sizeof(double), 64);
-    double* B_block = (double*)_mm_malloc(K * N * sizeof(double), 64);
+static void inline do_block (int lda, int M, int N, int K, double* A, double* B, double* C, double* A_block, double* B_block){
     double *a_ptr, *b_ptr, *c_ptr;
-    double cip;
+    double tem;
 
     int M_mod_4 = M % 4;
     int N_mod_4 = N % 4;
     int i=0,j;
 
-    for (j = 0 ; j < N - 3; j += 4){
+    for (j = 0 ; j < N - 3; j += 4) {
         b_ptr = &B_block[j * K];
 
-        for (int m = 0; m < K; m++){
+        for (int m = 0; m < K; m++) {
             for (int n = 0; n < 4; n++) {
                 b_ptr[m * 4 + n] = B[(j + n) * lda + m];
             }
         }
 
-        for (i = 0; i < M-3; i += 4){
+        for (i = 0; i < M - 3; i += 4) {
             a_ptr = &A_block[i * K];
 
-            if (j == 0){
+            if (j == 0) {
                 double* a_src = A + i;
-                double* a_des = a_ptr;
                 for (int u = 0; u < K; u++) {
-                    for (int o = 0; o < 4; o++) {
-                        a_des[o] = a_src[o];
-                    }
-                    a_des += 4;
+                    memcpy(a_ptr + u * 4, a_src, 4 * sizeof(double));
                     a_src += lda;
                 }
             }
@@ -152,30 +145,27 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
 
     if (M_mod_4 != 0){
         for (; i < M; ++i){
-            for (int p = 0; p < N; ++p){
-                cip = C[i + p * lda];
-
-                for (int k = 0; k < K; ++k){
-                    cip += A[i + k * lda] * B[k + p * lda];
+            for (int p = 0; p < N; p++){
+                tem = C[i + p * lda];
+                for (int k = 0; k < K; k++){
+                    tem += A[i + k * lda] * B[k + p * lda];
                 }
-                C[i + p * lda] = cip;
+                C[i + p * lda] = tem;
             }
         }
     }
     if (N_mod_4 != 0){
-        for (; j < N; ++j){
-            for (int p = 0; p < M - M_mod_4; ++p){
-                cip = C[p + j * lda];
-
-                for (int k = 0; k < K; ++k){
-                    cip += A[p + k * lda] * B[k + j * lda];
+        for (; j < N; j++){
+            for (int p = 0; p < M - M_mod_4; p++){
+                tem = C[p + j * lda];
+                for (int k = 0; k < K; k++){
+                    tem += A[p + k * lda] * B[k + j * lda];
                 }
-                C[p + j * lda] = cip;
+                C[p + j * lda] = tem;
             }
         }
     }
-    _mm_free(A_block);
-    _mm_free(B_block);
+
 }
 
 
@@ -186,6 +176,8 @@ static void do_block (int lda, int M, int N, int K, double* A, double* B, double
 void square_dgemm(int lda, double* A, double* B, double* C){
 
     int fixlda=lda;
+    double* A_block = (double*)_mm_malloc(lda * lda * sizeof(double), 32);
+    double* B_block = (double*)_mm_malloc(lda * lda * sizeof(double), 32);
 
     // For each block-row of A
     for (int i = 0; i < fixlda; i += BLOCK_SIZE){
@@ -193,24 +185,25 @@ void square_dgemm(int lda, double* A, double* B, double* C){
         for (int j = 0; j < fixlda; j += BLOCK_SIZE){
             // For each block-column of B
             for (int k = 0; k < fixlda; k += BLOCK_SIZE){
-                int M = min(BLOCK_SIZE, fixlda - i); // Height of the block of A and C
-                int N = min(BLOCK_SIZE, fixlda - j); // Width of the block of B and C
-                int K = min(BLOCK_SIZE, fixlda - k); // Width of the block of A and height of the block of B
+                int M = min(BLOCK_SIZE, fixlda - i);
+                int N = min(BLOCK_SIZE, fixlda - j);
+                int K = min(BLOCK_SIZE, fixlda - k);
                 // Perform individual block dgemm
                 for (int f = i; f < i + M; f += SMALL_BLOCK){
                     for (int g = j; g < j + N; g += SMALL_BLOCK) {
                         for (int h = k; h < k + K; h += SMALL_BLOCK){
-                            int Q = min(SMALL_BLOCK, i + M - f); // Height of the small block of A and C
-                            int W = min(SMALL_BLOCK, j + N - g); // Width of the small block of B and C
-                            int E = min(SMALL_BLOCK, k + K - h); // Corresponds to the "inner dimension"
+                            int Q = min(SMALL_BLOCK, i + M - f);
+                            int W = min(SMALL_BLOCK, j + N - g);
+                            int E = min(SMALL_BLOCK, k + K - h);
                             // Perform do_block for the small block
-                            do_block(fixlda, Q, W, E, A + f + h * fixlda, B + h + g * fixlda, C + f + g * fixlda);
+                            do_block(fixlda, Q, W, E, A + f + h * fixlda, B + h + g * fixlda, C + f + g * fixlda, A_block, B_block);
                         }
                     }
                 }
             }
         }
-}
-
- //  print_matrix("Result Matrix C", lda, C);
+    }
+    _mm_free(A_block);
+    _mm_free(B_block);
+    //  print_matrix("Result Matrix C", lda, C);
 }
