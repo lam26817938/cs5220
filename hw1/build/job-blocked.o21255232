@@ -1,0 +1,29 @@
+Description:	Lian's simple blocked dgemm.
+
+Size: 31	Mflops/s: 13483.25	Percentage: 24.08
+Size: 32	Mflops/s: 21081.31	Percentage: 37.65
+Size: 96	Mflops/s: 24008.50	Percentage: 42.87
+Size: 97	Mflops/s: 22075.79	Percentage: 39.42
+Size: 127	Mflops/s: 20963.60	Percentage: 37.44
+Size: 128	Mflops/s: 24519.26	Percentage: 43.78
+Size: 129	Mflops/s: 21741.46	Percentage: 38.82
+Size: 191	Mflops/s: 21800.79	Percentage: 38.93
+Size: 192	Mflops/s: 24451.50	Percentage: 43.66
+Size: 229	Mflops/s: 23197.47	Percentage: 41.42
+Size: 255	Mflops/s: 22098.40	Percentage: 39.46
+Size: 256	Mflops/s: 23375.15	Percentage: 41.74
+Size: 257	Mflops/s: 22643.91	Percentage: 40.44
+Size: 319	Mflops/s: 22971.97	Percentage: 41.02
+Size: 320	Mflops/s: 24672.53	Percentage: 44.06
+Size: 321	Mflops/s: 23385.16	Percentage: 41.76
+Size: 417	Mflops/s: 23938.34	Percentage: 42.75
+Size: 479	Mflops/s: 23211.73	Percentage: 41.45
+Size: 480	Mflops/s: 24677.39	Percentage: 44.07
+Size: 511	Mflops/s: 22063.86	Percentage: 39.40
+Size: 512	Mflops/s: 21118.92	Percentage: 37.71
+Size: 639	Mflops/s: 23721.17	Percentage: 42.36
+Size: 640	Mflops/s: 24363.63	Percentage: 43.51
+Size: 767	Mflops/s: 23693.15	Percentage: 42.31
+Size: 768	Mflops/s: 23299.66	Percentage: 41.61
+Size: 769	Mflops/s: 23706.09	Percentage: 42.33
+Average percentage of Peak = 40.54
