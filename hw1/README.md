@@ -48,7 +48,7 @@ Only `CMAKE_BUILD_TYPE` is required, though there are more variables that you mi
 2. `CMAKE_C_FLAGS` -- this allows you to specify additional compiler flags.
 3. `MAX_SPEED` -- this should be equal to the maximum number of gigaflops-per-second (GF/s) your processor can execute.
 It is set to 56 by default, which matches Perlmutter's processors.
-4. `TEAM_NO` -- when you are ready to submit your assignment, set this to be your **three-digit** team number.
+4. `GROUP_NO` -- when you are ready to submit your assignment, set this to be your **three-digit** team number.
 5. `ALL_SIZES` -- set to `ON` to test against a large set of matrix sizes. `OFF` by default.
 
 When you build in Debug mode, optimizations are disabled.
