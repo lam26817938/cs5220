@@ -1,0 +1,10 @@
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/serial.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/openmp.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/package.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/package_source.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/edit_cache.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/rebuild_cache.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/list_install_components.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/install.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/install/local.dir
+/global/u1/l/ll987/cs5220/hw2/build/CMakeFiles/install/strip.dir

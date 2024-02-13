@@ -1,0 +1,3 @@
+/global/u1/l/ll987/cs5220/hw2/build/_CPack_Packages/Linux/TGZ/CS5220Group68_hw2/./serial.cpp
+/global/u1/l/ll987/cs5220/hw2/build/_CPack_Packages/Linux/TGZ/CS5220Group68_hw2/./openmp.cpp
+/global/u1/l/ll987/cs5220/hw2/build/_CPack_Packages/Linux/TGZ/CS5220Group68_hw2/./CS5220Group68_hw2.pdf

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 find_package(OpenMP REQUIRED)
 
 # Group number
-set(GROUP_NO 00 CACHE STRING "Your group number (two digits)")
+set(GROUP_NO 68 CACHE STRING "Your group number (two digits)")
 
 # Packaging system
 if (NOT ${GROUP_NO} STREQUAL 00)
