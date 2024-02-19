@@ -1,14 +1,21 @@
 #include "common.h"
+#include <omp.h>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 
+// Put any static global variables here that you will use throughout the simulation.
 using namespace std;
 
+double gridCellSize;
 int gridSize;
 vector<vector<vector<int>>> grid;
 
+
+
 // Apply the force from neighbor to particle
 void apply_force(particle_t& particle, particle_t& neighbor) {
+
     // Calculate Distance
     double dx = neighbor.x - particle.x;
     double dy = neighbor.y - particle.y;
@@ -48,19 +55,38 @@ void move(particle_t& p, double size) {
     }
 }
 
-void compute_forces_grid(particle_t* parts, int num_parts) {
-    for (int i = 0; i < gridSize; i++) {
-        for (int j = 0; j < gridSize; j++) {
-            for (int ind : grid[i][j]) {
+
+void init_simulation(particle_t* parts, int num_parts, double size) {
+    // You can use this space to initialize static, global data objects
+    // that you may need. This function will be called once before the
+    // algorithm begins. Do not do any particle simulation here
+
+    gridCellSize=cutoff;
+    gridSize = ceil(size / gridCellSize);
+    grid.resize(gridSize, vector<vector<int>>(gridSize));
+
+    for (int i = 0; i < num_parts; i++) {
+        int gridX = int(parts[i].x / gridCellSize);
+        int gridY = int(parts[i].y / gridCellSize);
+        grid[gridX][gridY].push_back(i);
+    }
+
+}
+
+void simulate_one_step(particle_t* parts, int num_parts, double size) {
+    // Compute Forces
+
+    for (int x = 0; x < gridSize; ++x) {
+        for (int y = 0; y < gridSize; ++y) {
+            for (int ind : grid[x][y]) {
                 particle_t& p = parts[ind];
-                //
-                for (int di = -1; di <= 1; di++) {
-                    for (int dj = -1; dj <= 1; dj++) {
-                        //
-                        int ni = i + di, nj = j + dj;
+                p.ax = 0;
+                p.ay = 0;
+                for (int di = -1; di <= 1; ++di) {
+                    for (int dj = -1; dj <= 1; ++dj) {
+                        int ni = x + di, nj = y + dj;
                         if (ni >= 0 && ni < gridSize && nj >= 0 && nj < gridSize) {
                             for (int neighborInd : grid[ni][nj]) {
-                                //
                                 if (ind != neighborInd) {
                                     particle_t& neighbor = parts[neighborInd];
                                     apply_force(p, neighbor);
@@ -72,48 +98,25 @@ void compute_forces_grid(particle_t* parts, int num_parts) {
             }
         }
     }
-}
-
-void populate_grid(particle_t* parts, int num_parts) {
-    for (int i = 0; i < gridSize; i++)
-        for (int j = 0; j < gridSize; j++)
-            grid[i][j].clear();
-
-    for (int i = 0; i < num_parts; i++) {
-        int gridX = int(parts[i].x / cutoff);
-        int gridY = int(parts[i].y / cutoff);
-        grid[gridX][gridY].push_back(i);
-    }
-}
-
-
-
-
-void init_simulation(particle_t* parts, int num_parts, double size) {
-	// You can use this space to initialize static, global data objects
-    // that you may need. This function will be called once before the
-    // algorithm begins. Do not do any particle simulation here
-
-    gridSize = ceil(size / cutoff);
-    grid.resize(gridSize, vector<vector<int>>(gridSize));
-}
-
-void simulate_one_step(particle_t* parts, int num_parts, double size) {
-    // Compute Forces
-
-    populate_grid(parts, num_parts);
-
-    for (int i = 0; i < num_parts; ++i) {
-        parts[i].ax = 0;
-        parts[i].ay = 0;
-    }
-
-    compute_forces_grid(parts, num_parts);
 
     // Move Particles
     for (int i = 0; i < num_parts; ++i) {
+
+        int x_old = int(parts[i].x / gridCellSize);
+        int y_old = int(parts[i].y / gridCellSize);
+
         move(parts[i], size);
+
+        int x_new = int(parts[i].x / gridCellSize);
+        int y_new = int(parts[i].y / gridCellSize);
+
+
+        if (x_old != x_new || y_old != y_new) {
+            auto& oldCell = grid[x_old][y_old];
+            oldCell.erase(remove(oldCell.begin(), oldCell.end(), i), oldCell.end());
+            grid[x_new][y_new].push_back(i);
+
+        }
     }
+
 }
-
-

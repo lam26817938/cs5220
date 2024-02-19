@@ -229,6 +229,7 @@ CMakeFiles/serial.dir/main.cpp.o: ../main.cpp \
 CMakeFiles/serial.dir/serial.cpp.o: ../serial.cpp \
   /usr/include/stdc-predef.h \
   ../common.h \
+  /usr/lib64/gcc/x86_64-suse-linux/12/include/omp.h \
   /usr/include/c++/12/cmath \
   /usr/include/c++/12/x86_64-suse-linux/bits/c++config.h \
   /usr/include/bits/wordsize.h \
@@ -328,8 +329,23 @@ CMakeFiles/serial.dir/serial.cpp.o: ../serial.cpp \
   /usr/include/c++/12/bits/stl_function.h \
   /usr/include/c++/12/backward/binders.h \
   /usr/include/c++/12/bits/range_access.h \
-  /usr/include/c++/12/bits/vector.tcc
+  /usr/include/c++/12/bits/vector.tcc \
+  /usr/include/c++/12/algorithm \
+  /usr/include/c++/12/bits/stl_algo.h \
+  /usr/include/c++/12/bits/algorithmfwd.h \
+  /usr/include/c++/12/bits/stl_heap.h \
+  /usr/include/c++/12/bits/stl_tempbuf.h \
+  /usr/include/c++/12/bits/uniform_int_dist.h \
+  /usr/include/c++/12/cstdlib
 
+
+/usr/include/c++/12/bits/stl_tempbuf.h:
+
+/usr/include/c++/12/bits/stl_heap.h:
+
+/usr/include/c++/12/bits/stl_algo.h:
+
+/usr/include/c++/12/algorithm:
 
 ../serial.cpp:
 
@@ -444,6 +460,8 @@ CMakeFiles/serial.dir/serial.cpp.o: ../serial.cpp \
 /usr/include/c++/12/bits/locale_classes.h:
 
 /usr/include/c++/12/x86_64-suse-linux/bits/atomic_word.h:
+
+/usr/lib64/gcc/x86_64-suse-linux/12/include/omp.h:
 
 /usr/include/bits/setjmp.h:
 
@@ -696,6 +714,8 @@ CMakeFiles/serial.dir/serial.cpp.o: ../serial.cpp \
 /usr/include/bits/struct_mutex.h:
 
 /usr/include/alloca.h:
+
+/usr/include/c++/12/bits/algorithmfwd.h:
 
 /usr/include/bits/time64.h:
 
